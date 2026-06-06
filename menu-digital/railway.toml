@@ -1,0 +1,28 @@
+# railway.toml — Despliegue independiente del micrositio en Railway
+# Plugin "Menú Digital" del Microkernel — totalmente desacoplado del sistema principal
+# Documentación: https://docs.railway.app/reference/config-as-code
+
+[build]
+# Railway ejecuta estos comandos para construir el sitio estático
+builder = "nixpacks"
+buildCommand = "bun install && bun run build"
+
+[deploy]
+# Railway sirve los archivos estáticos generados por Vite
+startCommand = "npx serve dist --single --listen 3000"
+healthcheckPath = "/"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[[services]]
+name = "menu-digital"
+
+[services.networking]
+# Puerto expuesto al público
+port = 3000
+
+[services.variables]
+# La URL de Convex se inyecta como variable de entorno en Railway
+# Ir a: Railway Dashboard → menu-digital → Variables → VITE_CONVEX_URL
+VITE_CONVEX_URL = ""   # Completar con tu URL de Convex deployment

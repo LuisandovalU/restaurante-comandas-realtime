@@ -1,0 +1,33 @@
+{
+  "name": "menu-digital-rincon-del-parque",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Micrositio público de menú digital — El Rincón del Parque. Plugin independiente del Microkernel.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5174",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4174",
+    "lint": "biome lint ./src",
+    "format": "biome format --write ./src"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "^1.114.0",
+    "convex": "^1.21.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@tanstack/router-plugin": "^1.114.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "bun": ">=1.1.0"
+  }
+}

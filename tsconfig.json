@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    /* Base */
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    /* Interoperabilidad */
+    "allowJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    /* JSX */
+    "jsx": "react-jsx",
+
+    /* Strict */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Salida */
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "noEmit": true,
+
+    /* Paths alias — importa con ~/ en lugar de rutas relativas largas */
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "convex", "app.config.ts", "vite.config.ts"],
+  "exclude": ["node_modules", ".vinxi", ".output", "dist", "convex/_generated"]
+}

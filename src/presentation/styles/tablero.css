@@ -1,0 +1,380 @@
+/* =============================================================================
+   TABLERO KANBAN — Sistema de Comandas "El Rincón del Parque"
+   Tokens de diseño + estilos del tablero, columnas y tarjetas
+============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   TOKENS DE DISEÑO (CSS Custom Properties)
+--------------------------------------------------------------------------- */
+:root {
+  /* Paleta principal */
+  --color-bg:           #0f1117;
+  --color-surface:      #1a1d27;
+  --color-surface-2:    #22263a;
+  --color-border:       rgba(255,255,255,0.08);
+  --color-text:         #e8eaf0;
+  --color-text-muted:   #7c8099;
+
+  /* Estados Kanban — colores semánticos */
+  --estado-pendiente-bg:      #1e1a2e;
+  --estado-pendiente-accent:  #7c3aed;
+  --estado-pendiente-badge:   rgba(124,58,237,0.18);
+  --estado-pendiente-glow:    rgba(124,58,237,0.25);
+
+  --estado-prep-bg:           #1a1e2e;
+  --estado-prep-accent:       #f59e0b;
+  --estado-prep-badge:        rgba(245,158,11,0.15);
+  --estado-prep-glow:         rgba(245,158,11,0.25);
+
+  --estado-listo-bg:          #0f2018;
+  --estado-listo-accent:      #10b981;
+  --estado-listo-badge:       rgba(16,185,129,0.15);
+  --estado-listo-glow:        rgba(16,185,129,0.25);
+
+  /* Estaciones */
+  --estacion-frios:    #38bdf8;
+  --estacion-calientes:#f97316;
+  --estacion-postres:  #ec4899;
+
+  /* Dificultad */
+  --dif-1: #10b981;
+  --dif-2: #84cc16;
+  --dif-3: #f59e0b;
+  --dif-4: #f97316;
+  --dif-5: #ef4444;
+
+  /* Espaciado y radios */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --gap:        16px;
+}
+
+/* ---------------------------------------------------------------------------
+   CONTENEDOR DEL TABLERO
+--------------------------------------------------------------------------- */
+.tablero-kanban {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Encabezado con título y barra de info */
+.tablero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tablero-titulo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.tablero-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Indicador de conexión en tiempo real */
+.indicador-rt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+.indicador-rt-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: pulso-rt 2s ease-in-out infinite;
+}
+
+@keyframes pulso-rt {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+.estrategia-badge {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+/* ---------------------------------------------------------------------------
+   GRID DE COLUMNAS
+--------------------------------------------------------------------------- */
+.tablero-columnas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .tablero-columnas { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------------------------
+   COLUMNA KANBAN
+--------------------------------------------------------------------------- */
+.columna-kanban {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 200px;
+}
+
+/* Estado visual cuando una tarjeta sobrevuela la columna */
+.columna-kanban.drop-activo {
+  border-color: var(--accent, var(--estado-prep-accent));
+  box-shadow: 0 0 0 2px var(--glow, var(--estado-prep-glow));
+}
+
+/* Variantes por estado */
+.columna-kanban[data-estado="Pendiente"] {
+  --accent: var(--estado-pendiente-accent);
+  --glow:   var(--estado-pendiente-glow);
+}
+.columna-kanban[data-estado="En Preparación"] {
+  --accent: var(--estado-prep-accent);
+  --glow:   var(--estado-prep-glow);
+}
+.columna-kanban[data-estado="Listo"] {
+  --accent: var(--estado-listo-accent);
+  --glow:   var(--estado-listo-glow);
+}
+
+/* Encabezado de la columna */
+.columna-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px 10px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 4px;
+}
+
+.columna-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.columna-icono {
+  font-size: 1rem;
+}
+
+.columna-contador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: var(--accent, var(--color-surface-2));
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Zona vacía */
+.columna-vacia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+/* ---------------------------------------------------------------------------
+   TARJETA DE COMANDA
+--------------------------------------------------------------------------- */
+.tarjeta-comanda {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.tarjeta-comanda:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  border-color: rgba(255,255,255,0.16);
+}
+
+.tarjeta-comanda:active,
+.tarjeta-comanda.arrastrando {
+  cursor: grabbing;
+  opacity: 0.4;
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+/* Overlay de la tarjeta mientras se arrastra (DragOverlay) */
+.tarjeta-overlay {
+  background: var(--color-surface-2);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 2px var(--color-surface);
+  transform: rotate(2deg) scale(1.03);
+  cursor: grabbing;
+}
+
+/* Línea de acento por estado (borde izquierdo) */
+.tarjeta-acento {
+  position: absolute;
+  left: 0; top: 12px; bottom: 12px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--acento-color, #7c3aed);
+}
+
+/* Fila superior: mesa + tiempo */
+.tarjeta-fila-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tarjeta-mesa {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tarjeta-tiempo {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Nombre del platillo */
+.tarjeta-platillo {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+  padding-left: 10px;
+}
+
+/* Fila de badges: estación + dificultad */
+.tarjeta-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-left: 10px;
+}
+
+.badge-estacion {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.badge-estacion[data-estacion="Fríos"]    { background: rgba(56,189,248,0.15); color: var(--estacion-frios); }
+.badge-estacion[data-estacion="Calientes"]{ background: rgba(249,115,22,0.15);  color: var(--estacion-calientes); }
+.badge-estacion[data-estacion="Postres"]  { background: rgba(236,72,153,0.15);  color: var(--estacion-postres); }
+
+.badge-dificultad {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.badge-dificultad[data-nivel="1"] { background: rgba(16,185,129,0.15); color: var(--dif-1); }
+.badge-dificultad[data-nivel="2"] { background: rgba(132,204,22,0.15);  color: var(--dif-2); }
+.badge-dificultad[data-nivel="3"] { background: rgba(245,158,11,0.15);  color: var(--dif-3); }
+.badge-dificultad[data-nivel="4"] { background: rgba(249,115,22,0.15);  color: var(--dif-4); }
+.badge-dificultad[data-nivel="5"] { background: rgba(239,68,68,0.15);   color: var(--dif-5); }
+
+/* Notas del mesero */
+.tarjeta-notas {
+  font-size: 0.73rem;
+  color: var(--color-text-muted);
+  padding: 5px 8px 5px 10px;
+  border-left: 2px solid var(--color-border);
+  border-radius: 2px;
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------------------------
+   ESTADOS DE CARGA Y ERROR
+--------------------------------------------------------------------------- */
+.tablero-skeleton {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
+
+.skeleton-col {
+  height: 300px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.tablero-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px;
+  color: #ef4444;
+  text-align: center;
+}

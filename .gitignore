@@ -1,0 +1,45 @@
+# ── Dependencias ─────────────────────────────────────────────────────────────
+node_modules/
+menu-digital/node_modules/
+
+# ── Caché global de Bun (fuera del proyecto) ──────────────────────────────────
+/Users/
+
+# ── Build outputs ─────────────────────────────────────────────────────────────
+dist/
+.output/
+.vinxi/
+menu-digital/dist/
+
+# ── Convex generado automáticamente ──────────────────────────────────────────
+convex/_generated/
+
+# ── Variables de entorno (¡NUNCA subir al repo!) ──────────────────────────────
+.env
+.env.local
+.env.*.local
+menu-digital/.env
+menu-digital/.env.local
+menu-digital/.env.*.local
+
+# ── Bun ───────────────────────────────────────────────────────────────────────
+bun.lockb
+menu-digital/bun.lockb
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── TypeScript generado ───────────────────────────────────────────────────────
+src/routeTree.gen.ts
+menu-digital/src/routeTree.gen.ts
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editor ───────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo

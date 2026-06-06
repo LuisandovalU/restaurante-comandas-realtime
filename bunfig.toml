@@ -1,0 +1,25 @@
+# bunfig.toml — Configuración del runtime Bun
+# Documentación: https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Registro de paquetes NPM
+registry = "https://registry.npmjs.org"
+# Guarda el lockfile al instalar
+lockfile = true
+# Instala dependencias de desarrollo por defecto
+production = false
+
+[install.cache]
+# Directorio de caché local de Bun
+dir = "~/.bun/install/cache"
+# Deshabilitar caché (útil en CI)
+disable = false
+
+[test]
+# Usa el runner nativo de Bun para tests
+timeout = 10000
+coverage = true
+
+[run]
+# Permite ejecutar scripts de package.json sin `bun run`
+shell = "bun"
