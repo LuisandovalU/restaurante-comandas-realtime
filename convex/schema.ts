@@ -54,7 +54,18 @@ export default defineSchema({
       v.literal("Pendiente"),
       v.literal("En Preparación"),
       v.literal("Listo"),
+      v.literal("Entregado"),
+      v.literal("En Proceso de Pago"),
       v.literal("Pagado"),   // Estado que activa el webhook de facturación
+    ),
+
+    /** Método de pago seleccionado al solicitar la cuenta */
+    metodo_pago: v.optional(
+      v.union(
+        v.literal("Efectivo"),
+        v.literal("Tarjeta"),
+        v.literal("Dividido")
+      )
     ),
 
     /** Mesa a la que pertenece el pedido */

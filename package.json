@@ -5,9 +5,9 @@
   "description": "Sistema de Gestión de Comandas en Tiempo Real — El Rincón del Parque",
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev",
-    "build": "vinxi build",
-    "start": "vinxi start",
+    "dev": "vite dev",
+    "build": "vite build && tsc --noEmit",
+    "start": "node .output/server/index.mjs",
     "convex:dev": "convex dev",
     "convex:deploy": "convex deploy",
     "lint": "biome lint ./src ./convex",
@@ -16,26 +16,25 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tanstack/react-router": "^1.114.0",
-    "@tanstack/start": "^1.114.0",
-    "@tanstack/router-devtools": "^1.114.0",
-    "convex": "^1.21.0",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "zod": "^3.24.0",
+    "@tanstack/react-router": "^1.170.16",
+    "@tanstack/react-start": "^1.168.26",
+    "convex": "^1.21.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "vinxi": "^0.5.3"
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@tanstack/router-plugin": "^1.114.0",
-    "@vitejs/plugin-react": "^4.3.4",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/node": "^22.5.4",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "nitro": "^3.0.260311-beta",
     "typescript": "^5.7.0",
-    "vite": "^6.0.0",
+    "vite": "^8.0.14",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "engines": {
