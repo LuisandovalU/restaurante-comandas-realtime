@@ -67,7 +67,7 @@ export const crearProducto = mutation({
     descripcion: v.optional(v.string()),
     precio: v.number(),
     tiempo_preparacion: v.number(),
-    nivel_dificultad: v.union(
+    dificultad: v.union(
       v.literal(1),
       v.literal(2),
       v.literal(3),
@@ -75,10 +75,9 @@ export const crearProducto = mutation({
       v.literal(5),
     ),
     estacion: v.union(
-      v.literal("frios"),
-      v.literal("calientes"),
-      v.literal("postres"),
-      v.literal("bebidas"),
+      v.literal("Postres"),
+      v.literal("Calientes"),
+      v.literal("Fríos"),
     ),
     categoriaId: v.id("categorias"),
     imagen_url: v.optional(v.string()),
@@ -104,13 +103,20 @@ export const actualizarProducto = mutation({
     descripcion: v.optional(v.string()),
     precio: v.optional(v.number()),
     tiempo_preparacion: v.optional(v.number()),
-    nivel_dificultad: v.optional(
+    dificultad: v.optional(
       v.union(
         v.literal(1),
         v.literal(2),
         v.literal(3),
         v.literal(4),
         v.literal(5),
+      ),
+    ),
+    estacion: v.optional(
+      v.union(
+        v.literal("Postres"),
+        v.literal("Calientes"),
+        v.literal("Fríos"),
       ),
     ),
     disponible: v.optional(v.boolean()),

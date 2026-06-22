@@ -24,25 +24,11 @@ export const listarPedidos = query({
       .order("desc")
       .collect();
 
-    // Enriquecemos cada pedido con sus items para renderizar la tarjeta Kanban
-    return Promise.all(
-      pedidos.map(async (pedido) => {
-        const items = await ctx.db
-          .query("items_pedido")
-          .withIndex("by_pedido", (q) => q.eq("pedidoId", pedido._id))
-          .collect();
-
-        // Hidratamos los items con el nombre del producto
-        const itemsDetallados = await Promise.all(
-          items.map(async (item) => {
-            const producto = await ctx.db.get(item.productoId);
-            return { ...item, nombre_producto: producto?.nombre ?? "Desconocido" };
-          }),
-        );
-
-        return { ...pedido, items: itemsDetallados };
-      }),
-    );
+    // Devuelve los pedidos con un array de items vacío para mantener la compatibilidad de tipo
+    return pedidos.map((pedido) => ({
+      ...pedido,
+      items: [] as any[],
+    }));
   },
 });
 
@@ -52,9 +38,9 @@ export const listarPedidos = query({
 export const listarPedidosPorEstado = query({
   args: {
     estado: v.union(
-      v.literal("pendiente"),
-      v.literal("en_preparacion"),
-      v.literal("listo"),
+      v.literal("Pendiente"),
+      v.literal("En Preparación"),
+      v.literal("Listo"),
     ),
   },
   handler: async (ctx, { estado }) => {
@@ -124,9 +110,9 @@ export const actualizarEstado = mutation({
   args: {
     pedidoId: v.id("pedidos"),
     nuevoEstado: v.union(
-      v.literal("pendiente"),
-      v.literal("en_preparacion"),
-      v.literal("listo"),
+      v.literal("Pendiente"),
+      v.literal("En Preparación"),
+      v.literal("Listo"),
     ),
   },
   handler: async (ctx, { pedidoId, nuevoEstado }) => {
@@ -138,9 +124,9 @@ export const actualizarEstado = mutation({
 
     // --- PATRÓN STATE: Validación de transiciones permitidas ---
     const transicionesPermitidas: Record<string, string[]> = {
-      pendiente: ["en_preparacion"],
-      en_preparacion: ["listo"],
-      listo: [], // Estado terminal — no se puede mover
+      "Pendiente": ["En Preparación"],
+      "En Preparación": ["Listo"],
+      "Listo": [], // Estado terminal — no se puede mover
     };
 
     const estadosPermitidos = transicionesPermitidas[pedido.estado] ?? [];
@@ -173,17 +159,10 @@ export const archivarPedido = mutation({
 
     const pedido = await ctx.db.get(pedidoId);
     if (!pedido) throw new Error("Pedido no encontrado");
-    if (pedido.estado !== "listo") {
-      throw new Error("Solo se pueden archivar pedidos en estado 'listo'");
+    if (pedido.estado !== "Listo") {
+      throw new Error("Solo se pueden archivar pedidos en estado 'Listo'");
     }
 
-    // Eliminamos primero los items para mantener integridad referencial
-    const items = await ctx.db
-      .query("items_pedido")
-      .withIndex("by_pedido", (q) => q.eq("pedidoId", pedidoId))
-      .collect();
-
-    await Promise.all(items.map((item) => ctx.db.delete(item._id)));
     await ctx.db.delete(pedidoId);
   },
 });
