@@ -14,7 +14,7 @@ export function useKanban() {
       try {
         await actualizarEstado({
           pedidoId: pedidoId as Id<"pedidos">,
-          nuevoEstado,
+          nuevoEstado: nuevoEstado as any,
         });
       } catch (error) {
         console.error("Error al mover el pedido:", error);
