@@ -24,4 +24,8 @@ export default defineConfig({
     sourcemap: true,
     target: "esnext",
   },
+  server: {
+    // Permite que la app sea accesible desde otros dispositivos en la misma red Wi-Fi
+    host: true,
+  },
 });
