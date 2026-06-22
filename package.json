@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && tsc --noEmit",
-    "start": "vite preview --host 0.0.0.0 --port ${PORT:-8080}",
+    "start": "serve -s dist/client",
     "convex:dev": "convex dev",
     "convex:deploy": "convex deploy",
     "lint": "biome lint ./src ./convex",
@@ -24,6 +24,7 @@
     "convex": "^1.21.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "serve": "^14.2.6",
     "zod": "^3.24.0"
   },
   "devDependencies": {
